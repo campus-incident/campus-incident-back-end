@@ -1,14 +1,17 @@
 package org.campusincident.webservice.incident;
 
 import java.time.Instant;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.campusincident.webservice.category.Category;
 import org.campusincident.webservice.geolocation.Geolocation;
 import org.campusincident.webservice.location.Location;
 
@@ -42,6 +45,9 @@ public class Incident {
 	
 	@NotNull
 	private String status;
+	
+	@ManyToMany
+	private List<Category> categories;
 
 	public Long getId() {
 		return id;
@@ -105,6 +111,14 @@ public class Incident {
 
 	public void setGeolocation(Geolocation geolocation) {
 		this.geolocation = geolocation;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 	
 }
