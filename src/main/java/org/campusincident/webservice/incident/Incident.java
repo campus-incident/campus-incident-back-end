@@ -43,7 +43,6 @@ public class Incident {
 	@NotNull
 	private Geolocation geolocation;
 	
-	@NotNull
 	private String status;
 	
 	@ManyToMany

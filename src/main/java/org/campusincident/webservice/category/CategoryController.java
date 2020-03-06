@@ -29,7 +29,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/categories")
-	List<Category> getAllCategories(@RequestParam Optional<String> containing) {
+	List<Category> getAllCategories(@RequestParam(required = false) Optional<String> containing) {
 		
 		Iterable<Category> categories = containing
 				.map( x -> this.repoCategory.findByNameContaining(x) )
