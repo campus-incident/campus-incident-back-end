@@ -21,6 +21,8 @@ public class CategoryController {
 	private CategoryRepository repoCategory;
 	@Autowired
 	private IncidentRepository repoIncident;
+	@Autowired
+	private CategoryService servCategory;
 	
 	public CategoryController() {
 		// TODO Auto-generated constructor stub
@@ -47,27 +49,7 @@ public class CategoryController {
 	
 	@PostMapping("/categories/rename")
 	Category renameCategory(@RequestBody CategoryRenameDto renaming) {
-		
-		Category from = this.repoCategory.findById(renaming.getFrom()).orElseThrow(() -> new CategoryNotFoundException(renaming.getFrom()));
-		if (this.repoCategory.findById(renaming.getTo()).isPresent()) {
-			throw new CategoryNameAlreadyExsistException(renaming.getTo());
-		}
-		
-		Category newCat = new Category();
-		newCat.setName(renaming.getTo());
-		newCat = this.repoCategory.save(newCat);
-		
-		// cascade entities
-		List<Incident> incidentList = this.repoIncident.findByCategories_Name(renaming.getFrom());
-		for (Incident incident : incidentList) {
-			incident.getCategories().remove(from);
-			incident.getCategories().add(newCat);
-			this.repoIncident.save(incident);
-		}
-		
-		this.repoCategory.delete(from);
-
-		return newCat;
+		return this.servCategory.rename(renaming.getFrom(), renaming.getTo());
 	}
 
 }

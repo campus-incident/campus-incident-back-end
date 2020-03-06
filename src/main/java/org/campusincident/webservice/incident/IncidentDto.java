@@ -1,6 +1,7 @@
 package org.campusincident.webservice.incident;
 
 import java.time.Instant;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -29,8 +30,11 @@ public class IncidentDto {
 	
 	@NotNull
 	private Double longitude;
+	
 	@NotNull
 	private Double latitude;
+	
+	private List<String >categories;
 
 	public String getAuthor() {
 		return author;
@@ -94,6 +98,14 @@ public class IncidentDto {
 
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public List<String> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<String> categories) {
+		this.categories = categories;
 	}
 	
 }

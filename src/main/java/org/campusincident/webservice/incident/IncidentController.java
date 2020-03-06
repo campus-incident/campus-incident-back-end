@@ -2,6 +2,7 @@ package org.campusincident.webservice.incident;
 
 import java.util.List;
 
+import org.campusincident.webservice.category.CategoryService;
 import org.campusincident.webservice.exceptions.IncidentNotFoundException;
 import org.campusincident.webservice.exceptions.LocationNotFoundException;
 import org.campusincident.webservice.geolocation.Geolocation;
@@ -23,6 +24,8 @@ public class IncidentController {
 	private LocationRepository repoLocation;
 	@Autowired
 	private GeolocationRepository repoGeolocation;
+	@Autowired
+	private CategoryService servCategory;
 	
 	public IncidentController() {
 		// TODO Auto-generated constructor stub
@@ -57,6 +60,7 @@ public class IncidentController {
 				return this.repoGeolocation.save(newGeo);
 			})
 		);
+		tmp.setCategories(this.servCategory.getOrCreate(newIncident.getCategories()));
 		return this.repoIncident.save(tmp);
 	}
 	

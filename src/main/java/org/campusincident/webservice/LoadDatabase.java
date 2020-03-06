@@ -87,7 +87,7 @@ public class LoadDatabase {
     	Incident incident3 = new Incident();
     	incident3.setAuthor("marie@me.com");
     	incident3.setLocation(campusLille1);
-    	incident3.setStatus("En attente");
+    	incident3.setStatus("Réparé");
     	incident3.setCreatedAt(LocalDateTime.parse("2020-02-21T17:05:14").atZone(ZoneId.of("Europe/Paris")).toInstant());
     	incident3.setTitle("Vitre cassée");
     	incident3.setDescription("Des éclats de verre sont présents sur le sol.");
