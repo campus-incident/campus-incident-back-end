@@ -34,7 +34,17 @@ public class IncidentDto {
 	@NotNull
 	private Double latitude;
 	
+	private Long imageId;
+	
 	private List<String >categories;
+
+	public Long getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
+	}
 
 	public String getAuthor() {
 		return author;

@@ -45,8 +45,18 @@ public class Incident {
 	
 	private String status;
 	
+	private Long imageId;
+	
 	@ManyToMany
 	private List<Category> categories;
+
+	public Long getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
+	}
 
 	public Long getId() {
 		return id;

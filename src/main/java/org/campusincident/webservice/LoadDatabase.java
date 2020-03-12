@@ -3,7 +3,11 @@ package org.campusincident.webservice;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
+import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -13,6 +17,9 @@ import org.campusincident.webservice.category.Category;
 import org.campusincident.webservice.category.CategoryRepository;
 import org.campusincident.webservice.geolocation.Geolocation;
 import org.campusincident.webservice.geolocation.GeolocationRepository;
+import org.campusincident.webservice.image.Image;
+import org.campusincident.webservice.image.ImageRepository;
+import org.campusincident.webservice.image.ImageService;
 import org.campusincident.webservice.incident.Incident;
 import org.campusincident.webservice.incident.IncidentRepository;
 import org.campusincident.webservice.location.Location;
@@ -30,7 +37,9 @@ public class LoadDatabase {
 		  LocationRepository repoLocation,
 		  GeolocationRepository repoGeolocation,
 		  IncidentRepository repoIncident,
-		  CategoryRepository repoCategory
+		  CategoryRepository repoCategory,
+		  ImageRepository repoImage,
+		  ImageService servImage
 		  ) {
     return (args) -> {
 
@@ -64,6 +73,11 @@ public class LoadDatabase {
     	campusLille3 = repoLocation.save(campusLille3);
     	logger.info("added location campus lille 3 " + campusLille1.toString());
     	
+    	Image imagePoubelleCassee = servImage.store(
+    			new ClassPathResource("images/poubelle-cassee.png"),
+    			"image/png"
+    	);
+    	
     	Incident incident1 = new Incident();
     	incident1.setAuthor("bob@me.com");
     	incident1.setLocation(campusLille1);
@@ -72,7 +86,13 @@ public class LoadDatabase {
     	incident1.setTitle("Poubelle détruite");
     	incident1.setCategories(Arrays.asList(catMobilier));
     	incident1.setGeolocation(m5avant);
+    	incident1.setImageId(imagePoubelleCassee.getId());
     	incident1 = repoIncident.save(incident1);
+    	
+    	Image imagePanneauArrache = servImage.store(
+    			new ClassPathResource("images/panneau-arrache.jpg"),
+    			"image/jpeg"
+    	);
     	
     	Incident incident2 = new Incident();
     	incident2.setAuthor("bob@me.com");
@@ -82,6 +102,7 @@ public class LoadDatabase {
     	incident2.setTitle("Panneau au sol");
     	incident2.setCategories(Arrays.asList(catMobilier, catEspaceVert));
     	incident2.setGeolocation(peripherique);
+    	incident2.setImageId(imagePanneauArrache.getId());
     	incident2 = repoIncident.save(incident2);
     	
     	Incident incident3 = new Incident();

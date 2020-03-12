@@ -7,11 +7,15 @@ import org.campusincident.webservice.exceptions.IncidentNotFoundException;
 import org.campusincident.webservice.exceptions.LocationNotFoundException;
 import org.campusincident.webservice.geolocation.Geolocation;
 import org.campusincident.webservice.geolocation.GeolocationRepository;
+import org.campusincident.webservice.image.ImageService;
 import org.campusincident.webservice.location.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +30,8 @@ public class IncidentController {
 	private GeolocationRepository repoGeolocation;
 	@Autowired
 	private CategoryService servCategory;
-	
-	public IncidentController() {
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	private ImageService servImage;
 	
 	@GetMapping("/incidents")
 	List<Incident> getAllIncidents() {
@@ -42,6 +44,7 @@ public class IncidentController {
 	}
 	
 	@PostMapping("/incidents")
+	@Transactional
 	Incident newIncident(@RequestBody IncidentDto newIncident) {
 		Incident tmp = new Incident();
 		tmp.setAuthor(newIncident.getAuthor());
@@ -61,6 +64,8 @@ public class IncidentController {
 			})
 		);
 		tmp.setCategories(this.servCategory.getOrCreate(newIncident.getCategories()));
+		servImage.get(newIncident.getImageId()); // will throw if image not found
+		tmp.setImageId(newIncident.getImageId());
 		return this.repoIncident.save(tmp);
 	}
 	
