@@ -64,8 +64,12 @@ public class IncidentController {
 			})
 		);
 		tmp.setCategories(this.servCategory.getOrCreate(newIncident.getCategories()));
-		servImage.get(newIncident.getImageId()); // will throw if image not found
-		tmp.setImageId(newIncident.getImageId());
+		
+		if (newIncident.getImageId() != null) {
+			servImage.get(newIncident.getImageId()); // will throw if image not found
+			tmp.setImageId(newIncident.getImageId());
+		}
+		
 		return this.repoIncident.save(tmp);
 	}
 	
