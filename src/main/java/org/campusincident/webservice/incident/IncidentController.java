@@ -10,12 +10,10 @@ import org.campusincident.webservice.geolocation.GeolocationRepository;
 import org.campusincident.webservice.image.ImageService;
 import org.campusincident.webservice.location.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,18 +32,18 @@ public class IncidentController {
 	private ImageService servImage;
 	
 	@GetMapping("/incidents")
-	List<Incident> getAllIncidents() {
+	public List<Incident> getAllIncidents() {
 		return (List<Incident>) repoIncident.findAll();
 	}
 	
 	@GetMapping("/incidents/{id}")
-	Incident getLocation(@PathVariable Long id) {
+	public Incident getLocation(@PathVariable Long id) {
 		return this.repoIncident.findById(id).orElseThrow(() -> new IncidentNotFoundException(id));
 	}
 	
 	@PostMapping("/incidents")
 	@Transactional
-	Incident newIncident(@RequestBody IncidentDto newIncident) {
+	public Incident newIncident(@RequestBody IncidentDto newIncident) {
 		Incident tmp = new Incident();
 		tmp.setAuthor(newIncident.getAuthor());
 		tmp.setDescription(newIncident.getDescription());

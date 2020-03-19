@@ -1,8 +1,6 @@
 package org.campusincident.webservice.image;
 
 import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.campusincident.webservice.exceptions.ImageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,10 @@ public class ImageService {
 		return this.repoImage.save(img);
 	}
 	
-	public Image get(Long id) throws ImageNotFoundException {
+	/**
+	 * @throws ImageNotFoundException when image with given id not found
+	 */
+	public Image get(Long id) {
 		return this.repoImage.findById(id).orElseThrow(() -> new ImageNotFoundException(id));
 	}
 	

@@ -4,15 +4,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-
-import java.io.File;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.campusincident.webservice.category.Category;
 import org.campusincident.webservice.category.CategoryRepository;
 import org.campusincident.webservice.geolocation.Geolocation;
@@ -31,6 +25,9 @@ import org.slf4j.LoggerFactory;
 public class LoadDatabase {
 	
   Logger logger = LoggerFactory.getLogger(LoadDatabase.class);
+  
+  private static final String ATTENTE_STATUS = "En attente";
+  private static final String TZ_PARIS = "Europe/Paris";
 
   @Bean
   CommandLineRunner initDatabase(
@@ -41,7 +38,7 @@ public class LoadDatabase {
 		  ImageRepository repoImage,
 		  ImageService servImage
 		  ) {
-    return (args) -> {
+    return args -> {
 
     	Geolocation lille1 = repoGeolocation.save(new Geolocation(50.609361d, 3.141449d));
     	Geolocation lille3 = repoGeolocation.save(new Geolocation(50.627748d, 3.126055d));
@@ -61,17 +58,17 @@ public class LoadDatabase {
     	campusLille1.setCenter(lille1);
     	campusLille1.setName("Campus Lille 1");
     	campusLille1.setRadius(700d);
-    	campusLille1.setTzName("Europe/Paris");
+    	campusLille1.setTzName(TZ_PARIS);
     	campusLille1 = repoLocation.save(campusLille1);
-    	logger.info("added location campus lille 1 " + campusLille1.toString());
+    	logger.info("Added location {}", campusLille1.getName());
     	
     	Location campusLille3 = new Location();
     	campusLille3.setCenter(lille3);
     	campusLille3.setName("Campus Lille 3");
     	campusLille3.setRadius(500d);
-    	campusLille3.setTzName("Europe/Paris");
+    	campusLille3.setTzName(TZ_PARIS);
     	campusLille3 = repoLocation.save(campusLille3);
-    	logger.info("added location campus lille 3 " + campusLille1.toString());
+    	logger.info("Added location {}", campusLille3.getName());
     	
     	Image imagePoubelleCassee = servImage.store(
     			new ClassPathResource("images/poubelle-cassee.png"),
@@ -81,8 +78,8 @@ public class LoadDatabase {
     	Incident incident1 = new Incident();
     	incident1.setAuthor("bob@me.com");
     	incident1.setLocation(campusLille1);
-    	incident1.setStatus("En attente");
-    	incident1.setCreatedAt(LocalDateTime.parse("2020-02-21T12:22:59").atZone(ZoneId.of("Europe/Paris")).toInstant());
+    	incident1.setStatus(ATTENTE_STATUS);
+    	incident1.setCreatedAt(LocalDateTime.parse("2020-02-21T12:22:59").atZone(ZoneId.of(TZ_PARIS)).toInstant());
     	incident1.setTitle("Poubelle détruite");
     	incident1.setCategories(Arrays.asList(catMobilier));
     	incident1.setGeolocation(m5avant);
@@ -97,8 +94,8 @@ public class LoadDatabase {
     	Incident incident2 = new Incident();
     	incident2.setAuthor("bob@me.com");
     	incident2.setLocation(campusLille1);
-    	incident2.setStatus("En attente");
-    	incident2.setCreatedAt(LocalDateTime.parse("2020-02-19T08:55:42").atZone(ZoneId.of("Europe/Paris")).toInstant());
+    	incident2.setStatus(ATTENTE_STATUS);
+    	incident2.setCreatedAt(LocalDateTime.parse("2020-02-19T08:55:42").atZone(ZoneId.of(TZ_PARIS)).toInstant());
     	incident2.setTitle("Panneau au sol");
     	incident2.setCategories(Arrays.asList(catMobilier, catEspaceVert));
     	incident2.setGeolocation(peripherique);
@@ -109,7 +106,7 @@ public class LoadDatabase {
     	incident3.setAuthor("marie@me.com");
     	incident3.setLocation(campusLille1);
     	incident3.setStatus("Réparé");
-    	incident3.setCreatedAt(LocalDateTime.parse("2020-02-21T17:05:14").atZone(ZoneId.of("Europe/Paris")).toInstant());
+    	incident3.setCreatedAt(LocalDateTime.parse("2020-02-21T17:05:14").atZone(ZoneId.of(TZ_PARIS)).toInstant());
     	incident3.setTitle("Vitre cassée");
     	incident3.setDescription("Des éclats de verre sont présents sur le sol.");
     	incident3.setGeolocation(m5avant);
@@ -118,8 +115,8 @@ public class LoadDatabase {
     	Incident incident4 = new Incident();
     	incident4.setAuthor("jean@me.com");
     	incident4.setLocation(campusLille1);
-    	incident4.setStatus("En attente");
-    	incident4.setCreatedAt(LocalDateTime.parse("2020-02-23T11:59:31").atZone(ZoneId.of("Europe/Paris")).toInstant());
+    	incident4.setStatus(ATTENTE_STATUS);
+    	incident4.setCreatedAt(LocalDateTime.parse("2020-02-23T11:59:31").atZone(ZoneId.of(TZ_PARIS)).toInstant());
     	incident4.setTitle("Panneau tordu");
     	incident4.setGeolocation(m5derriere);
     	incident4.setCategories(Arrays.asList(catEspaceVert));

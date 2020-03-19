@@ -31,8 +31,8 @@ public class CategoryService {
 	
 	/** creates only non existing names, otherwise will return the existing Category */
 	public List<Category> getOrCreate(List<String> names) {
-		if(names == null) return new ArrayList<Category>();
-		return names.stream().map((name) -> this.getOrCreate(name)).collect(Collectors.toList());
+		if(names == null) return new ArrayList<>();
+		return names.stream().map(this::getOrCreate).collect(Collectors.toList());
 	}
 
 	public Category rename(String from, String to) {

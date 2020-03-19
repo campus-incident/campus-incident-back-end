@@ -1,4 +1,4 @@
-package org.campusincident.campusincident;
+package org.campusincident;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

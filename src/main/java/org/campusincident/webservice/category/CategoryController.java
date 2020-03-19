@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.campusincident.webservice.exceptions.CategoryNameAlreadyExsistException;
-import org.campusincident.webservice.exceptions.CategoryNotFoundException;
-import org.campusincident.webservice.incident.Incident;
 import org.campusincident.webservice.incident.IncidentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +22,8 @@ public class CategoryController {
 	@Autowired
 	private CategoryService servCategory;
 	
-	public CategoryController() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	@GetMapping("/categories")
-	List<Category> getAllCategories(@RequestParam(required = false) Optional<String> containing) {
+	public List<Category> getAllCategories(@RequestParam(required = false) Optional<String> containing) {
 		
 		Iterable<Category> categories = containing
 				.map( x -> this.repoCategory.findByNameContaining(x) )
@@ -39,7 +33,7 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/categories")
-	Category newCategory(@RequestBody Category newCat) {
+	public Category newCategory(@RequestBody Category newCat) {
 		Optional<Category> storedCat = this.repoCategory.findById(newCat.getName());
 		if (storedCat.isPresent()) {
 			throw new CategoryNameAlreadyExsistException(storedCat.get().getName());
@@ -48,7 +42,7 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/categories/rename")
-	Category renameCategory(@RequestBody CategoryRenameDto renaming) {
+	public Category renameCategory(@RequestBody CategoryRenameDto renaming) {
 		return this.servCategory.rename(renaming.getFrom(), renaming.getTo());
 	}
 

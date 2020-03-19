@@ -14,17 +14,13 @@ public class LocationController {
 	@Autowired
 	private LocationRepository repoLocation;
 	
-	public LocationController() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	@GetMapping("/locations")
-	List<Location> getAllLocations() {
+	public List<Location> getAllLocations() {
 		return (List<Location>) repoLocation.findAll();
 	}
 	
 	@GetMapping("/locations/{id}")
-	Location getLocation(@PathVariable Long id) {
+	public Location getLocation(@PathVariable Long id) {
 		return this.repoLocation.findById(id).orElseThrow(() -> new LocationNotFoundException(id));
 	}
 
